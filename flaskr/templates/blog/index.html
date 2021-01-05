@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}PostTopics{% endblock %}</h1>
+    {% if g.user %}
+        <a class="action" href="{{url_for('blog.create')}}">add new topic</a>
+    {% endif %}
+ {% endblock %}
+
+ {% block content %}
+    {% for topic in topics %}
+        <article class="post_topic">
+            <header>
+                <div>
+                    <h1>{{topic['topic_name']}}</h1>
+                    <p>{{topic['topic_cat']}}</p>
+                    <div>by {{topic['user_name']}} on {{topic['topic_date'].strftime('%Y-%m-%d')}}</div>
+                </div>
+
+                {% if g.user['id'] == topic['topic_by'] %}
+                    <a class="action" href="{{url_for('blog.update', id=topic['topic_by'])}}">Edit</a>
+                {% endif %}
+            </header>
+            <p class="body">{{topic['topic_subject']}}</p>
+        </article>
+
+        {% if not loop.last %}
+        {% endif %}
+    {% endfor %}
+ {% endblock %}
